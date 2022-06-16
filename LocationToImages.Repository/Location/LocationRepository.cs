@@ -2,6 +2,7 @@
 using LocationToImages.Repository.DTOs.Location;
 using LocationToImages.Repository.EntityFramework;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -46,6 +47,11 @@ namespace LocationToImages.Repository.Location
                 .FirstOrDefault(g => g.GeoCodes.Equals(geoLocationDTO.GeoCodes));
 
             return await Task.Run(() => geoLocation?.ToGeoLocationDTO());
+        }
+
+        public async Task<IEnumerable<LocationDTO>> GetLocationsAsync()
+        {
+            return await Task.Run(() => locationToImagesContext.Locations.AsEnumerable().Select(l => l.ToLocationDTO()));
         }
 
         public async Task<GeoLocationDTO> InsertGeoLocationAsync(GeoLocationDTO geoLocationDTO)

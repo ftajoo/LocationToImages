@@ -1,4 +1,5 @@
 ﻿using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace LocationToImages.WebApi
 {
@@ -8,6 +9,8 @@ namespace LocationToImages.WebApi
         {
             // Web API configuration and services
             config.Filters.Add(new AuthorizeAttribute());
+
+            config.EnableCors(new EnableCorsAttribute("*", "*", "*"));
 
             // Web API routes
             config.MapHttpAttributeRoutes();

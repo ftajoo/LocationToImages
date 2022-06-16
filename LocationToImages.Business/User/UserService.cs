@@ -44,7 +44,7 @@ namespace LocationToImages.Business.User
 
             if (!userAuthenticateDTO.Password.Equals(user.Password))
             {
-                throw new ArgumentException("Incorrect credentials");
+                throw new ArgumentException("Incorrect password");
             }
 
             return user.ToUserDTO();

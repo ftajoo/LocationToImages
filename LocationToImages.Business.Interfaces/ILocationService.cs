@@ -8,6 +8,8 @@ namespace LocationToImages.Business.Interfaces
 {
     public interface ILocationService
     {
+        Task<IEnumerable<DTOs.Location.LocationDTO>> GetLocationsAsync();
+
         Task<DTOs.Location.GeoLocationDTO> GetGeoLocationAsync(string address);
 
         Task<DTOs.Location.GeoLocationDTO> InsertGeoLocationAsync(string address);

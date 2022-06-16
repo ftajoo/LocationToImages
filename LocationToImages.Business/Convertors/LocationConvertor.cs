@@ -39,5 +39,14 @@
                 Address = val.Address
             };
         }
+
+        public static DTOs.Location.LocationDTO ToLocationDTO(this Repository.DTOs.Location.LocationDTO val)
+        {
+            return new DTOs.Location.LocationDTO
+            {
+                Id = val.Id,
+                Address = val.Address
+            };
+        }
     }
 }

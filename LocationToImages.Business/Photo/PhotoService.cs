@@ -38,6 +38,22 @@ namespace LocationToImages.Business.Photo
             return (await photoRepository.SearchPhotosAsync(address)).Select(p => p.ToPhotoDTO());
         }
 
+        public async Task<IEnumerable<PhotoDTO>> InsertPhotosAsync(IEnumerable<PhotoDTO> photos)
+        {
+            if (photos == null)
+            {
+                throw new ArgumentNullException(nameof(photos));
+            }
+
+            if (!photos.Any())
+            {
+                throw new ArgumentException("Photos can not be empty.");
+            }
+
+            return await InsertPhotosAsync(() => photoRepository.InsertPhotosAsync(photos.Select(p => p.ToPhotoDTO())),
+                () => Task.Run(() => photos));
+        }
+
         public async Task<IEnumerable<PhotoDTO>> InsertPhotosAsync(string address)
         {
             if (string.IsNullOrWhiteSpace(address))

@@ -41,7 +41,7 @@ namespace LocationToImages.WebApi.Controllers
             }
             catch (ArgumentException ex)
             {
-                Response<Response<Models.User.User>> reponse = new Response<Response<Models.User.User>>(null)
+                Response<Models.User.User> reponse = new Response<Models.User.User>(null)
                 {
                     Succeeded = false,
                     Error = ex.Message
@@ -57,7 +57,7 @@ namespace LocationToImages.WebApi.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        [ResponseType(typeof(Response<string>))]
+        [ResponseType(typeof(Response<Models.User.Token>))]
         [Route("authenticate")]
         public async Task<IHttpActionResult> Authenticate([FromBody]Models.User.UserAuthenticate userAuthenticate)
         {
@@ -70,11 +70,18 @@ namespace LocationToImages.WebApi.Controllers
                     return Unauthorized();
                 }
 
-                return Ok(new Response<string>(JwtManager.GenerateToken(user.Username)));
+                Models.User.Token token = new Models.User.Token
+                {
+                    User = user.ToUser(),
+                    Expires = 120,
+                    JwtToken = JwtManager.GenerateToken(user.Username)
+                };
+
+                return Ok(new Response<Models.User.Token>(token));
             }
             catch (ArgumentException ex)
             {
-                Response<string> reponse = new Response<string>(null)
+                Response<Models.User.Token> reponse = new Response<Models.User.Token>(null)
                 {
                     Succeeded = false,
                     Error = ex.Message

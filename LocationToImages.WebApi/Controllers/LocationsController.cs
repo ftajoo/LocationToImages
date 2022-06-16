@@ -3,6 +3,8 @@ using LocationToImages.WebApi.Convertors;
 using LocationToImages.WebApi.Filters;
 using LocationToImages.WebApi.Models.Wrapper;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
@@ -21,6 +23,33 @@ namespace LocationToImages.WebApi.Controllers
 
         [JwtAuthentication]
         [HttpGet]
+        [ResponseType(typeof(Response<IEnumerable<Models.Location.Location>>))]
+        [Route()]
+        public async Task<IHttpActionResult> GetLocations()
+        {
+            try
+            {
+                IEnumerable<Models.Location.Location> locations = (await locationService.GetLocationsAsync()).Select(l => l.ToLocation());
+                return Ok(new Response<IEnumerable<Models.Location.Location>>(locations.ToList()));
+            }
+            catch (ArgumentException ex)
+            {
+                Response<IEnumerable<Models.Location.Location>> reponse = new Response<IEnumerable<Models.Location.Location>>(null)
+                {
+                    Succeeded = false,
+                    Error = ex.Message
+                };
+
+                return Content(System.Net.HttpStatusCode.Unauthorized, reponse);
+            }
+            catch (Exception)
+            {
+                return InternalServerError();
+            }
+        }
+
+        [JwtAuthentication]
+        [HttpGet]
         [ResponseType(typeof(Response<Models.Location.GeoLocation>))]
         [Route("{address}")]
         public async Task<IHttpActionResult> GetGeoLocation(string address)
@@ -32,7 +61,7 @@ namespace LocationToImages.WebApi.Controllers
             }
             catch (ArgumentException ex)
             {
-                Response<Response<Models.Location.GeoLocation>> reponse = new Response<Response<Models.Location.GeoLocation>>(null)
+                Response<Models.Location.GeoLocation> reponse = new Response<Models.Location.GeoLocation>(null)
                 {
                     Succeeded = false,
                     Error = ex.Message
@@ -69,7 +98,7 @@ namespace LocationToImages.WebApi.Controllers
             }
             catch (ArgumentException ex)
             {
-                Response<Response<Models.Location.GeoLocation>> reponse = new Response<Response<Models.Location.GeoLocation>>(null)
+                Response<Models.Location.GeoLocation> reponse = new Response<Models.Location.GeoLocation>(null)
                 {
                     Succeeded = false,
                     Error = ex.Message
@@ -112,7 +141,7 @@ namespace LocationToImages.WebApi.Controllers
             }
             catch (ArgumentException ex)
             {
-                Response<Response<Models.Location.GeoLocation>> reponse = new Response<Response<Models.Location.GeoLocation>>(null)
+                Response<Models.Location.GeoLocation> reponse = new Response<Models.Location.GeoLocation>(null)
                 {
                     Succeeded = false,
                     Error = ex.Message

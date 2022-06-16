@@ -21,7 +21,8 @@ namespace LocationToImages.WebApi.Convertors
             return new Business.DTOs.Location.GeoLocationDTO
             {
                 GeoCodes = val.GeoCodes,
-                Id = val.Id
+                Id = val.Id,
+                Address = val.Address,
             };
         }
 
@@ -30,7 +31,17 @@ namespace LocationToImages.WebApi.Convertors
             return new Models.Location.GeoLocation
             {
                 GeoCodes = val.GeoCodes,
-                Id = val.Id
+                Id = val.Id,
+                Address = val.Address
+            };
+        }
+
+        public static Models.Location.Location ToLocation(this Business.DTOs.Location.LocationDTO val)
+        {
+            return new Models.Location.Location
+            {
+                Id = val.Id,
+                Address = val.Address
             };
         }
     }

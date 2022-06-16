@@ -69,7 +69,7 @@ namespace LocationToImages.WebApi.Controllers
 
             try
             {
-                IEnumerable<PhotoDTO> photoDTOs = await photoService.GetSavedPhotosAsync(p => p.Title.Contains(title));
+                IEnumerable<PhotoDTO> photoDTOs = await photoService.GetSavedPhotosAsync(p => p.Title.ToLower().Contains(title.ToLower()));
                 PagedResponse<IEnumerable<Models.Photo.Photo>> pagedResponse = ApplyFilter(filter, photoDTOs);
 
                 return Ok(pagedResponse);
@@ -108,7 +108,7 @@ namespace LocationToImages.WebApi.Controllers
 
             try
             {
-                IEnumerable<PhotoDTO> photoDTOs = await photoService.GetSavedPhotosAsync(p => p.Description.Contains(description));
+                IEnumerable<PhotoDTO> photoDTOs = await photoService.GetSavedPhotosAsync(p => p.Description.ToLower().Contains(description.ToLower()));
                 PagedResponse<IEnumerable<Models.Photo.Photo>> pagedResponse = ApplyFilter(filter, photoDTOs);
 
                 return Ok(pagedResponse);
@@ -147,7 +147,7 @@ namespace LocationToImages.WebApi.Controllers
 
             try
             {
-                IEnumerable<PhotoDTO> photoDTOs = await photoService.GetSavedPhotosAsync(p => p.Address.Contains(address));
+                IEnumerable<PhotoDTO> photoDTOs = await photoService.GetSavedPhotosAsync(p => p.Address.ToLower().Contains(address.ToLower()));
                 PagedResponse<IEnumerable<Models.Photo.Photo>> pagedResponse = ApplyFilter(filter, photoDTOs);
 
                 return Ok(pagedResponse);
@@ -220,6 +220,43 @@ namespace LocationToImages.WebApi.Controllers
                 };
 
                 IEnumerable<PhotoDTO> photoDTOs = await photoService.SearchPhotosAsync(geoCodesDTO);
+                return Ok(new Response<IEnumerable<Models.Photo.Photo>>(photoDTOs.Select(p => p.ToPhoto()).ToList()));
+            }
+            catch (ArgumentException ex)
+            {
+                Response<IEnumerable<Models.Photo.Photo>> reponse = new Response<IEnumerable<Models.Photo.Photo>>(null)
+                {
+                    Succeeded = false,
+                    Error = ex.Message
+                };
+
+                return Content(System.Net.HttpStatusCode.BadRequest, reponse);
+            }
+            catch (Exception)
+            {
+                return InternalServerError();
+            }
+        }
+
+        [JwtAuthentication]
+        [HttpPost]
+        [ResponseType(typeof(Response<IEnumerable<Models.Photo.Photo>>))]
+        [Route("from-list")]
+        public async Task<IHttpActionResult> PostPhotos([FromBody] Models.Photo.FromPhotos photos)
+        {
+            if (photos == null || photos.Photos == null || !photos.Photos.Any())
+            {
+                return BadRequest("Invalid passed data");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                IEnumerable<PhotoDTO> photoDTOs = await photoService.InsertPhotosAsync(photos.Photos.Select(p => p.ToPhotoDTO()));
                 return Ok(new Response<IEnumerable<Models.Photo.Photo>>(photoDTOs.Select(p => p.ToPhoto()).ToList()));
             }
             catch (ArgumentException ex)

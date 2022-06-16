@@ -9,7 +9,7 @@ namespace LocationToImages.WebApi.Token
     {
         private const string Secret = "db3OIsj+BXE9NZDy0t8W3TcNekrF+2d/1sFnWG4HnV8TZY30iTOdtVWJG8abWvB1GlOgJuQZdcF2Luqm/hccMw==";
 
-        public static string GenerateToken(string username, int expireMinutes=30)
+        public static string GenerateToken(string username, int expireMinutes=120)
         {
             byte[] key = Convert.FromBase64String(Secret);
 

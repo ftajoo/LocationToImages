@@ -2,6 +2,8 @@
 using LocationToImages.Business.DTOs.Location;
 using LocationToImages.Repository.Interfaces;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace LocationToImages.Business.Location
@@ -27,6 +29,11 @@ namespace LocationToImages.Business.Location
             return geoLocation == null ? null : geoLocation.ToGeoLocationDTO();
         }
 
+        public async Task<IEnumerable<LocationDTO>> GetLocationsAsync()
+        {
+            return (await locationRepository.GetLocationsAsync()).Select(l => l.ToLocationDTO());
+        }
+
         public async Task<GeoLocationDTO> InsertGeoLocationAsync(string address)
         {
             Repository.DTOs.Location.GeoLocationDTO geoLocation = (await GetGeoLocationAsync(address)).ToGeoLocationDTO();
@@ -36,7 +43,7 @@ namespace LocationToImages.Business.Location
 
             if (geoLocationDTO != null)
             {
-                throw new ArgumentException(nameof(geoLocationDTO));
+                throw new ArgumentException("Address does not exist.");
             }
 
             return (await locationRepository.InsertGeoLocationAsync(geoLocation)).ToGeoLocationDTO();
@@ -46,7 +53,7 @@ namespace LocationToImages.Business.Location
         {
             if (geoLocation == null)
             {
-                throw new ArgumentException(nameof(geoLocation));
+                throw new ArgumentNullException(nameof(geoLocation));
             }
 
             Repository.DTOs.Location.GeoLocationDTO geoLocationDTO = await locationRepository

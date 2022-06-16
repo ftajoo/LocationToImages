@@ -18,6 +18,8 @@ namespace LocationToImages.Business.Interfaces
 
         Task<IEnumerable<DTOs.Photo.PhotoDTO>> SearchPhotosAsync(DTOs.Photo.GeoCodesDTO geoCodes);
     
+        Task<IEnumerable<DTOs.Photo.PhotoDTO>> InsertPhotosAsync(IEnumerable<DTOs.Photo.PhotoDTO> photos);
+
         Task<IEnumerable<DTOs.Photo.PhotoDTO>> InsertPhotosAsync(string address);
 
         Task<IEnumerable<DTOs.Photo.PhotoDTO>> InsertPhotosAsync(DTOs.Photo.GeoCodesDTO geoCodes);
