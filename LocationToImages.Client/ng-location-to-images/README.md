@@ -8,7 +8,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 - Install [Node.js] which includes [Node Package Manager][npm]
 
-### Setting Up a Project
+### Setting up the environment
 
 Install the Angular CLI globally:
 
@@ -16,16 +16,27 @@ Install the Angular CLI globally:
 npm install -g @angular/cli
 ```
 
-## Development server
+## Run the application
+
+Change directory to the angular app:
+
+```
+cd ng-location-to-images
+```
+
+Install required packages:
+
+```
+npm install
+```
 
 Run the application:
 
 ```
-cd ng-location-to-images
 ng serve --open
 ```
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
 ## Further help
 
