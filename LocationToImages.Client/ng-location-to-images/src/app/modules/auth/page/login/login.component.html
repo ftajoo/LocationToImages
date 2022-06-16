@@ -1,0 +1,33 @@
+<mat-card class="login-card">
+  <mat-card-title>Login</mat-card-title>
+  <mat-card-content>
+    <form (ngSubmit)="onSubmit()" [formGroup]="formLogin">
+      <div fxFlexFill fxLayout="column">
+        <mat-form-field appearance="outline" class="full-width-field">
+          <mat-label>Username</mat-label>
+          <input matInput formControlName="username">
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="full-width-field">
+          <mat-label>Password</mat-label>
+          <input matInput [type]="hidePasswordIcon ? 'password' : 'text'" formControlName="password">
+          <button type="button" mat-icon-button matSuffix (click)="hidePasswordIcon = !hidePasswordIcon"
+            [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePasswordIcon">
+            <mat-icon>{{hidePasswordIcon ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+      <div fxFlexFill fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="top end">
+        <button type="submit" mat-raised-button color="primary" [disabled]="formLogin.invalid || isLoading">
+          <span *ngIf="!isLoading">Submit</span>
+          <span *ngIf="isLoading" fxFlex fxLayoutAlign="center" class="button-spinner">
+            <mat-spinner diameter="24"
+              strokeWidth="3"></mat-spinner>
+          </span>
+        </button>
+        <div>
+          <a [routerLink]="['/auth/register']">Don't have an account? Sign up here!</a>
+        </div>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

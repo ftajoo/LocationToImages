@@ -1,0 +1,95 @@
+<form class="search-container" fxLayout="column" (ngSubmit)="onSubmit()" [formGroup]="formSearch">
+  <div class="search" fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px" fxLayoutAlign="top start">
+    <mat-form-field appearance="outline" class="search-type-field">
+      <mat-label>Search type</mat-label>
+      <mat-select formControlName="searchType">
+        <mat-option *ngFor="let searchType of searchTypes" [value]="searchType" matTooltip="{{searchType.tooltip}}"
+          matTooltipPosition="after">
+          {{ searchType.label }}
+        </mat-option>
+      </mat-select>
+      <mat-hint align="start">Select a search type</mat-hint>
+    </mat-form-field>
+
+    <ng-container *ngIf="f['searchType'].value === searchTypes[0] then searchFrom else search"></ng-container>
+
+  </div>
+</form>
+
+<div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="1rem" class="button-add-location" *ngIf="photos.length > 0">
+  <button mat-raised-button color="primary" (click)="savePhotos()">
+    <ng-container *ngIf="!isLoadingSavePhotos else loadingButton">
+      Save images
+    </ng-container>
+  </button>
+  <button mat-raised-button color="primary" (click)="addLocationToList()">
+    <ng-container *ngIf="!isLoadingAddLocationToList else loadingButton">
+      Add location to list
+    </ng-container>
+  </button>
+</div>
+
+<mat-divider class="photos-divider"></mat-divider>
+
+<ng-container *ngIf="!isLoading else loading">
+  <ng-container *ngIf="photosFiltered.length > 0 else noPhotos">
+    <mat-paginator [length]="photos.length" [pageSize]="pageSize" (page)="onPage($event)" aria-label="Select page"></mat-paginator>
+    <div class="photos-container" fxLayout="row wrap" fxLayoutGap="1rem grid" fxLayoutAlign="center top"
+      [@listAnimation]="photos.length">
+      <app-photo-card *ngFor="let photo of photosFiltered" [photo]="photo"></app-photo-card>
+    </div>
+  </ng-container>
+</ng-container>
+
+<ng-template #searchFrom [formGroup]="formSearch">
+  <mat-form-field appearance="outline" class="full-width-field form-field-with-button">
+    <mat-label>Search from</mat-label>
+    <mat-select formControlName="searchFrom">
+      <mat-option *ngFor="let location of locations" [value]="location.Id">
+        {{ location.Address }}
+      </mat-option>
+    </mat-select>
+    <button type="submit" matSuffix mat-mini-fab aria-label="Search" color="primary"
+      [disabled]="!f['searchFrom'].value || isLoading || isLoadingLocations"
+      (click)="$event.stopPropagation()">
+      <ng-container *ngIf="!isLoadingLocations else loadingLocations">
+        <mat-icon>search</mat-icon>
+      </ng-container>
+    </button>
+    <mat-hint align="start">{{searchTypes[0].tooltip}}</mat-hint>
+  </mat-form-field>
+</ng-template>
+
+<ng-template #search [formGroup]="formSearch">
+  <mat-form-field appearance="outline" class="full-width-field form-field-with-button">
+    <mat-label>Search</mat-label>
+    <input matInput formControlName="search">
+    <button type="submit" matSuffix mat-mini-fab aria-label="Search" color="primary"
+      [disabled]="formSearch.invalid || !f['search'].value || isLoading">
+      <mat-icon>search</mat-icon>
+    </button>
+    <mat-hint align="start">{{searchTypes[1].tooltip}}</mat-hint>
+  </mat-form-field>
+</ng-template>
+
+<ng-template #loading>
+  <div class="loading-container" fxLayout="row" fxLayoutAlign="center center" @fadeAnimation fxFlexFill>
+    <mat-spinner diameter="64" strokeWidth="8"></mat-spinner>
+  </div>
+</ng-template>
+
+<ng-template #loadingLocations>
+  <mat-spinner diameter="24" strokeWidth="3"></mat-spinner>
+</ng-template>
+
+<ng-template #loadingButton>
+  <div fxLayout="row" fxLayoutAlign="center" class="button-spinner">
+    <mat-spinner diameter="24" strokeWidth="3" color="accent"></mat-spinner>
+  </div>
+</ng-template>
+
+<ng-template #noPhotos>
+  <div fxLayout="row" fxLayoutAlign="center top" class="no-photos">
+    No photos available
+  </div>
+</ng-template>

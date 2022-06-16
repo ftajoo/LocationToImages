@@ -1,0 +1,20 @@
+<mat-toolbar>
+  <span>Location To Images</span>
+  <span class="toolbar-spacer"></span>
+  <div fxLayout="row" class="routes-container">
+    <a *ngFor="let navigation of navigations" mat-button matTooltip="{{navigation.text}}" class="toolbar-icon-button"
+      [ngClass]="{'active': this.router.url === navigation.url }" [routerLink]="[navigation.url]">
+      <mat-icon>{{ navigation.icon }}</mat-icon>
+      <span class="toolbar-icon-button-text">
+        {{ navigation.text }}
+      </span>
+    </a>
+    <button mat-button matTooltip="Logout" class="toolbar-icon-button"
+      (click)="logout()">
+      <mat-icon>logout</mat-icon>
+      <span class="toolbar-icon-button-text">
+        Logout
+      </span>
+    </button>
+  </div>
+</mat-toolbar>

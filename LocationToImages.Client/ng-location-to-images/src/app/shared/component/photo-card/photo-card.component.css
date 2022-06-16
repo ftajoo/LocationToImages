@@ -1,0 +1,15 @@
+.card-image {
+  object-fit: cover;
+}
+
+@media (min-width: 600px) {
+  .photo-card {
+    max-width: 270px;
+  }
+}
+
+@media (min-width: 960px) {
+  .photo-card {
+    max-width: 272px;
+  }
+}

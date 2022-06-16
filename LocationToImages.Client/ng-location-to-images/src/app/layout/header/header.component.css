@@ -1,0 +1,29 @@
+.toolbar-spacer {
+  flex: 1 1 auto;
+}
+
+.toolbar-icon-button {
+  min-width: unset;
+  padding: 0 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.toolbar-icon-button-text {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .toolbar-icon-button-text {
+    display: initial;
+  }
+}
+
+.active {
+  background-color: lightgrey;
+}
+
+.routes-container {
+  height: 75%;
+}

@@ -1,0 +1,31 @@
+.button-add-location {
+  margin-top: 1rem;
+}
+
+.photos-divider {
+  margin-top: 1rem;
+}
+
+.no-photos {
+  margin-top: 1rem;
+}
+
+.search__buttons {
+  width: 100%;
+}
+
+.search-type-field {
+  width: 100%;
+}
+
+@media (min-width: 600px) {
+  .search__buttons {
+    padding-top: 0.25rem;
+    width: unset;
+    height: 4rem;
+  }
+
+  .search-type-field {
+    width: unset;
+  }
+}

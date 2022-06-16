@@ -1,0 +1,13 @@
+<mat-card class="photo-card" *ngIf="photo">
+  <mat-card-header>
+    <mat-card-title>{{ photo.Title }}</mat-card-title>
+    <mat-card-subtitle>{{ photo.Address }}</mat-card-subtitle>
+  </mat-card-header>
+  <img mat-card-image class="card-image" [src]="photo.Url" alt="Photo of {{photo.Title}}">
+  <mat-card-content>
+    <p>
+      Description :
+      <span [innerHTML]="photo.Description"></span>
+    </p>
+  </mat-card-content>
+</mat-card>

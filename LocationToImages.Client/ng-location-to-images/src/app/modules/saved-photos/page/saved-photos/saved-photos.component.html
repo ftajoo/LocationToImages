@@ -1,0 +1,48 @@
+<form class="search-container" fxLayout="column" (ngSubmit)="onSubmit()" [formGroup]="formSearch">
+  <div class="search" fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px" fxLayoutAlign="top start">
+    <mat-form-field appearance="outline" class="search-by-field">
+      <mat-label>Search by</mat-label>
+      <mat-select formControlName="searchBy">
+        <mat-option *ngFor="let photoSearchBy of photoSearchBys" [value]="photoSearchBy">
+          {{photoSearchByMapping[photoSearchBy]}}
+        </mat-option>
+      </mat-select>
+      <mat-hint align="start">Select a field to search by</mat-hint>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="full-width-field form-field-with-button">
+      <mat-label>Search</mat-label>
+      <input matInput formControlName="search">
+      <button type="submit" matSuffix mat-mini-fab aria-label="Search" color="primary"
+        [disabled]="formSearch.invalid || (f['searchBy'].value !== photoSearchByEnum.All && !f['search'].value) || isLoading">
+        <mat-icon>search</mat-icon>
+      </button>
+      <mat-hint align="start">Search saved images by title, description or address</mat-hint>
+    </mat-form-field>
+  </div>
+</form>
+
+<mat-divider class="photos-divider"></mat-divider>
+
+<ng-container *ngIf="!isLoading else loading">
+  <ng-container *ngIf="photos.length > 0 else noPhotos">
+    <mat-paginator [length]="pageLength" [pageSize]="pageSize" (page)="onPage($event)" aria-label="Select page"></mat-paginator>
+    <ng-container *ngIf="!isLoadingPhotos else loading">
+      <div class="photos-container" fxLayout="row wrap" fxLayoutGap="1rem grid" fxLayoutAlign="center top"
+        [@listAnimation]="photos.length">
+        <app-photo-card *ngFor="let photo of photos" [photo]="photo"></app-photo-card>
+      </div>
+    </ng-container>
+  </ng-container>
+</ng-container>
+
+<ng-template #loading>
+  <div class="loading-container" fxLayout="row" fxLayoutAlign="center center" @fadeAnimation fxFlexFill>
+    <mat-spinner diameter="64" strokeWidth="8"></mat-spinner>
+  </div>
+</ng-template>
+
+<ng-template #noPhotos>
+  <div fxLayout="row" fxLayoutAlign="center top" class="no-photos">
+    No photos available
+  </div>
+</ng-template>

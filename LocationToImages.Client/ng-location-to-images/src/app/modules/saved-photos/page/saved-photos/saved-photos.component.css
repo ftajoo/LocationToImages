@@ -1,0 +1,34 @@
+.photos-divider {
+  margin-top: 1rem;
+}
+
+.photos-container {
+  padding-top: 1rem;
+}
+
+.search-by-field {
+  width: 100%;
+}
+
+.search__buttons {
+  width: 100%;
+}
+
+@media (min-width: 600px) {
+  .search__buttons {
+    padding-top: 0.95rem;
+    width: unset;
+  }
+
+  .photos-container {
+    padding-top: unset;
+  }
+
+  .search-by-field {
+    width: unset;
+  }
+}
+
+.no-photos {
+  margin-top: 1rem;
+}
